@@ -1,0 +1,23 @@
+---
+
+#file: /roles/maven/tasks/main.yml
+
+- name: download maven 3.3.3
+  get_url: url="{{maven.download_url}}" dest="/tmp/{{maven.file}}"
+  tags: maven
+
+- name: extract maven
+  unarchive: src="/tmp/{{maven.file}}" dest=/opt copy=no
+  tags: maven
+
+- name: create link to maven folder
+  file: src="{{maven.home}}" dest=/opt/maven state=link
+  tags: maven
+
+- name: tell the machine to use our maven
+  alternatives: name=mvn link=/usr/bin/mvn path=/opt/maven/bin/mvn
+  tags: maven
+
+- name: create .m2 folder
+  file: path="{{jenkins.base_dir}}/.m2" state=directory owner=jenkins group=jenkins
+  tags: maven

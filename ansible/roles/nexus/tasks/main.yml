@@ -1,0 +1,68 @@
+---
+ 
+# file: /roles/nexus/tasks/main.yml
+ 
+- name: create nexus group
+  group: name=nexus state=present
+  tags: nexus
+ 
+- name: create nexus user
+  user: name=nexus comment="Nexus" group=nexus createhome=yes
+  tags: nexus
+ 
+- name: download nexus
+  get_url: url="{{nexus.download_url}}" dest=/tmp/nexus
+  tags: nexus
+ 
+- name: extract nexus
+  unarchive: src=/tmp/nexus dest="{{nexus.base_dir}}" copy=no
+  tags: nexus
+ 
+- name: update the symbolic link to nexus install
+  file: path="{{nexus.home}}" src="{{nexus.base_dir}}/nexus-{{nexus.version}}" owner=nexus group=nexus state=link force=yes
+  tags: nexus
+ 
+- name: set NEXUS_HOME environment variable
+  lineinfile: dest=/etc/environment regexp="^export NEXUS_HOME.*" line="export NEXUS_HOME={{nexus.home}}" insertbefore="^PATH.*"
+  tags: nexus
+ 
+- name: move work directory to data directory
+  shell: mv {{nexus.base_dir}}/sonatype-work {{nexus.data_dir}}/sonatype-work
+  tags: nexus
+ 
+- name: change nexus work directory in nexus.properties file
+  replace: dest="{{nexus.home}}/conf/nexus.properties" regexp="^nexus-work=(.*)$" replace="nexus-work={{nexus.data_dir}}/sonatype-work"
+  tags: nexus
+ 
+- name: change ownership of nexus home
+  file: path="{{nexus.base_dir}}/nexus-{{nexus.version}}" owner=nexus group=nexus recurse=yes
+  tags: nexus
+ 
+- name: change ownership of nexus data directory
+  file: path="{{nexus.data_dir}}" owner=nexus group=nexus recurse=yes
+  tags: nexus
+ 
+- name: make nexus runned by nexus user
+  replace: dest="{{nexus.home}}/bin/nexus" regexp="#RUN_AS_USER=(.*)$" replace="RUN_AS_USER=nexus"
+  tags: nexus
+ 
+- name: change nexus home in binary file
+  replace: dest="{{nexus.home}}/bin/nexus" regexp="^NEXUS_HOME=(.*)" replace="NEXUS_HOME={{nexus.home}}"
+  tags: nexus
+ 
+- name: change nexus piddir in binary file
+  replace: dest="{{nexus.home}}/bin/nexus" regexp="^#PIDDIR=(.*)" replace="PIDDIR=/home/nexus"
+  tags: nexus
+ 
+- name: create symbolic link to /etc/init.d/nexus
+  file: src="{{nexus.home}}/bin/nexus" dest=/etc/init.d/nexus state=link
+  tags: nexus
+ 
+- name: make nexus script executable
+  file: path="{{nexus.home}}/bin/nexus" mode=0755
+  tags: nexus
+ 
+- name: enable nexus service
+  service: name=nexus enabled=yes
+  notify: restart nexus
+  tags: nexus

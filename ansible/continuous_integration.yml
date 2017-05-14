@@ -1,0 +1,15 @@
+---
+
+- hosts: ci
+  sudo: yes
+  gather_facts: no
+  roles:
+    - common_os_setup
+    - dependencies
+    - java8
+    - sonar
+    - ansible
+    - jenkins
+    - maven
+    - nexus
+    - apache

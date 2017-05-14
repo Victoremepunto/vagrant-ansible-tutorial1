@@ -1,0 +1,46 @@
+---
+#file: /roles/apache/tasks/main.yml
+
+- name: install apache2
+  apt: name=apache2 state=latest update_cache=yes
+  tags: apache
+
+- name: install apache2-utils for authentication
+  apt: name=apache2-utils state=latest update_cache=yes
+  tags: apache
+
+- name: enable mod_proxy module
+  apache2_module: name={{item}} state=present
+  with_items:
+    - proxy
+    - proxy_http
+    - rewrite
+    - headers
+    - ssl
+  notify: restart apache
+  tags: apache
+
+- name: create certificate folder
+  file: path="{{apache.ssl_folder}}" state=directory
+  tags: apache
+
+- name: copy SSL certificate
+  copy: src={{item}} dest="{{apache.ssl_folder}}"
+  with_items:
+      - dev.example.crt
+      - dev.example.key
+  tags: apache
+
+- name: copy virtualhost conf
+  template: src=virtualhost.conf dest="/etc/apache2/sites-available/{{apache.server_name}}.conf"
+  tags: apache
+
+- name: enable virtualhost conf
+  command: a2ensite {{apache.server_name}}
+  notify: restart apache
+  tags: apache
+
+- name: remove default virtualhost file
+  file: path=/etc/apache2/sites-enabled/000-default.conf state=absent
+  notify: restart apache
+  tags: apache
