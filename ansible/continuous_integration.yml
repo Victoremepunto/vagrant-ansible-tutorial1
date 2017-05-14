@@ -6,6 +6,7 @@
   roles:
     - common_os_setup
     - dependencies
+    - python2_latest
     - java8
     - sonar
     - ansible

@@ -1,0 +1,76 @@
+#file: /roles/python2_latest/tasks/main.yml
+
+- name: add Python repository
+  apt_repository:
+    repo: deb https://osirium.github.io/trusty-python
+  tags: dependency
+
+- name: update APT package cache
+  apt: update_cache=yes
+  tags: dependency
+
+- name: install latest python2
+  apt: name=python2.7
+  tags: dependency
+
+#- name: install dependencies for python-2.7.13
+#  apt: name=build-essential
+#  tags: dependency
+#
+#- name: install dependencies for python-2.7.13
+#  apt: name=checkinstall
+#  tags: dependency
+#
+#- name: install dependencies for python-2.7.13
+#  apt: name=libreadline-gplv2-dev
+#  tags: dependency
+#
+#- name: install dependencies for python-2.7.13
+#  apt: name=libncursesw5-dev
+#  tags: dependency
+#
+#- name: install dependencies for python-2.7.13
+#  apt: name=libssl-dev
+#  tags: dependency
+#
+#- name: install dependencies for python-2.7.13
+#  apt: name=libsqlite3-dev
+#  tags: dependency
+#
+#- name: install dependencies for python-2.7.13
+#  apt: name=tk-dev
+#  tags: dependency
+#
+#- name: install dependencies for python-2.7.13
+#  apt: name=libgdbm-dev
+#  tags: dependency
+#
+#- name: install dependencies for python-2.7.13
+#  apt: name=libc6-dev
+#  tags: dependency
+#
+#- name: install dependencies for python-2.7.13
+#  apt: name=libbz2-dev
+#  tags: dependency
+#
+#- name: create dest directory
+#  file: path={{python2_latest.dest}} state=directory
+#  tags: dependency
+#
+#- name: unpack python-2.7.13
+#  unarchive:
+#    src: '{{python2_latest.download_url}}'
+#    dest: '{{python2_latest.dest}}'
+#    remote_src: True
+#  tags: dependency
+#
+#- name: Running ./configure 
+#  command: '"{{ item }}" chdir={{python2_latest.dest}}/Python-2.7.13'
+#  with_items:
+#    - ./configure
+#
+#- name: Running "make clean" 
+#  command: 'make clean chdir={{python2_latest.dest}}/Python-2.7.13'
+#
+#- name: Running "make install" 
+#  command: 'make install chdir={{python2_latest.dest}}/Python-2.7.13'

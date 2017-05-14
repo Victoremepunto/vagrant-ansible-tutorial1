@@ -1,5 +1,9 @@
 ---
 
+python2_latest:
+    download_url: https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tgz
+    dest: /tmp/python2_latest
+
 maven:
     download_url: http://ftp.cixug.es/apache/maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.tar.gz
     file: apache-maven-3.3.3-bin.tar.gz

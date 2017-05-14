@@ -7,3 +7,43 @@
 - name: install git
   apt: name=git state=present
   tags: git
+
+- name: install dependencies for python-2.7.13
+  apt: name=build-essential
+  tags: dependency
+
+- name: install dependencies for python-2.7.13
+  apt: name=checkinstall
+  tags: dependency
+
+- name: install dependencies for python-2.7.13
+  apt: name=libreadline-gplv2-dev
+  tags: dependency
+
+- name: install dependencies for python-2.7.13
+  apt: name=libncursesw5-dev
+  tags: dependency
+
+- name: install dependencies for python-2.7.13
+  apt: name=libssl-dev
+  tags: dependency
+
+- name: install dependencies for python-2.7.13
+  apt: name=libsqlite3-dev
+  tags: dependency
+
+- name: install dependencies for python-2.7.13
+  apt: name=tk-dev
+  tags: dependency
+
+- name: install dependencies for python-2.7.13
+  apt: name=libgdbm-dev
+  tags: dependency
+
+- name: install dependencies for python-2.7.13
+  apt: name=libc6-dev
+  tags: dependency
+
+- name: install dependencies for python-2.7.13
+  apt: name=libbz2-dev
+  tags: dependency
