@@ -1,0 +1,30 @@
+---
+# file: /roles/nginx/tasks/common_configuration.yml
+
+- name: "Configuration | Create certificate folder"
+  file:
+      path: "{{ nginx_ssl_folder }}"
+      state: directory
+
+- name: "Configuration | Copy default SSL certificates"
+  copy:
+      src: "certs/{{ item }}"
+      dest: "{{ nginx_ssl_folder }}"
+  with_items:
+      - certificate.pem
+      - key.pem
+
+# To know what this task is related to read this article:
+# https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html#Forward_Secrecy_&_Diffie_Hellman_Ephemeral_Parameters
+#
+# We use -dsaparam to instruct OpenSSL to produce "DSA-like" DH parameters.
+# To know more about this read this article
+# https://wiki.openssl.org/index.php/Manual:Dhparam(1)#OPTIONS
+- name: "Configuration | Create dhparam to support Forward Secrecy"
+  shell: "openssl dhparam -dsaparam -out dhparam.pem 4096 chdir={{ nginx_ssl_folder }}"
+
+- name: "Configuration | Create Nginx general configuration"
+  template:
+    src: "nginx.conf"
+    dest: "{{ nginx_directory }}/nginx.conf"
+  notify: restart nginx

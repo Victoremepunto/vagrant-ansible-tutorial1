@@ -1,0 +1,18 @@
+---
+# file: /roles/nginx/tasks/Debian_app_configuration.yml
+
+- name: "App configuration | Create symlink to custom Nginx configuration"
+  file:
+      src: "{{ nginx_vhost_app_directory }}/{{ nginx_vhost_filename }}"
+      dest: "{{ nginx_directory }}/{{ nginx_enable_virtual_host_conf_dir }}/{{ nginx_vhost_filename }}"
+      state: link
+  notify: "restart nginx"
+
+- name: "App configuration | Remove default configuration"
+  file:
+      path: "{{ nginx_directory }}/{{ item }}"
+      state: absent
+  with_items:
+      - "{{ nginx_virtual_host_conf_dir }}/default"
+      - "{{ nginx_enable_virtual_host_conf_dir }}/default"
+  notify: "restart nginx"

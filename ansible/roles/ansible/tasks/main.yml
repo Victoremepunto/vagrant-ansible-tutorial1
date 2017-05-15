@@ -1,14 +1,18 @@
 ---
 # file: roles/ansible/tasks/main.yml
 
-- name: install python setup tools
-  apt: name=python-setuptools state=present update_cache=yes
-  tags: ansible
+# The items who start with lib and the python-dev are neccesary to can execute the task "intall ansible with pip"
+- name: "Install Ansible dependencies"
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+      - libffi6
+      - libssl-dev
+      - libffi-dev
+      - python-dev
+      - python-setuptools
 
-- name: install pip to manage ansible installation
-  command: easy_install pip
-  tags: ansible
-
-- name: install ansible with pip
-  command: pip install ansible
-  tags: ansible
+- name: "Install ansible with pip"
+  command: "pip install ansible"

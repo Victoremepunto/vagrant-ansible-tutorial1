@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "ubuntu/xenial64"
+  config.vm.box = "ubuntu/trusty64"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -77,7 +77,7 @@ Vagrant.configure("2") do |config|
   # SHELL
 
 
-  config.vm.define "continuous_integration" do | continuous_integration | 
+  config.vm.define "continuous_integration" do | continuous_integration |
     continuous_integration.vm.provision "ansible" do |ansible|
       ansible.inventory_path = "ansible/environments/continuous_integration/inventory"
       ansible.verbose = 'vvv'

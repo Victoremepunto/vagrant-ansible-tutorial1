@@ -1,0 +1,18 @@
+---
+# file: /roles/nginx/tasks/app_configuration.yml
+
+- name: "App configuration | Delete virtual host app directory"
+  file:
+      path: "{{ nginx_vhost_app_directory }}"
+      state: "absent"
+
+- name: "App configuration | Ensure virtual hosts application directory is created"
+  file:
+      path: "{{ nginx_vhost_app_directory }}"
+      state: "directory"
+
+- name: "App configuration | Test | Create virtual host proxy configuration"
+  template:
+    src: "vhost-reverse-proxy-test.conf"
+    dest: "{{ nginx_vhost_app_directory }}/{{ nginx_vhost_filename }}"
+  notify: "restart nginx"

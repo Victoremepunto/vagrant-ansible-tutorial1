@@ -1,0 +1,28 @@
+---
+# file: roles/nginx/defaults/main.ym
+
+# APP CONFIGURATION
+nginx_app_exists: false
+
+# LANDING CONFIGURATION
+nginx_landing_exists: false
+
+# MAIL CONFIGURATION
+nginx_mail_exists: false
+
+# WEB VHOST
+nginx_web_exists: false
+
+nginx_web_directory_name: "teams"
+nginx_mail_images_list:
+    - teams-mail-icon.png
+    - teams-mail-icon.svg
+
+nginx_virtual_host_conf_dir: "sites-available"
+nginx_enable_virtual_host_conf_dir: "sites-enabled"
+
+nginx_user: "www-data"
+
+nginx_vhost_filename: "vhost"
+
+nginx_default_web_server_path: "{{ Debian_web_server_dir }}"

@@ -1,0 +1,14 @@
+---
+# file: roles/pip/tasks/main.yml
+
+- name: "{{ ansible_os_family }} | Install easy_install"
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+      - python-dev
+      - python-setuptools
+
+- name: "Install pip to manage Ansible installation"
+  command: "easy_install pip"

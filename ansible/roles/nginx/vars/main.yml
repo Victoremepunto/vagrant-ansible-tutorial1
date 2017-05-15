@@ -1,0 +1,14 @@
+---
+# file: roles/nginx/vars/main.yml
+
+# SETUP
+nginx_directory: "/etc/nginx"
+nginx_vhost_app_directory: "{{ nginx_directory }}/{{ nginx_virtual_host_conf_dir }}"
+
+# COMMONS VHOST CONFIG
+nginx_ssl_folder: "{{ nginx_directory }}/ssl"
+nginx_certificate_file: "{{ nginx_ssl_folder }}/certificate.pem"
+nginx_certificate_key_file: "{{ nginx_ssl_folder }}/key.pem"
+
+# REVERSE PROXY VHOST
+nginx_server_name: "localhost"
