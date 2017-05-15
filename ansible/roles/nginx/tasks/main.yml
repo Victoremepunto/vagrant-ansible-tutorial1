@@ -1,0 +1,11 @@
+---
+# file: /roles/nginx/tasks/main.yml
+
+# INSTALL
+- include: "install.yml"
+
+- include: "common_configuration.yml"
+
+# APP CONFIGURATION
+- include: "app_configuration.yml"
+- include: "{{ role_path }}/tasks/Debian_app_configuration.yml"

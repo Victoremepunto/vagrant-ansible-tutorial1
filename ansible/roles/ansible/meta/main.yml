@@ -1,0 +1,6 @@
+---
+# file: roles/ansible/meta/main.yml
+
+dependencies:
+    - { role: unzip }
+    - { role: pip }
